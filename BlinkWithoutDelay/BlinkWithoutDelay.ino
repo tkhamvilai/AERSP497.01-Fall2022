@@ -11,7 +11,7 @@ unsigned long LED2_previousMillis = 0;
 unsigned long LED3_previousMillis = 0;
 
 void setup() {
-  DDRD |= ( (1 << PD5) | (1 << PD6) | (1 << PD7) );
+  DDRD |= ( (1 << LED1_PIN) | (1 << LED2_PIN) | (1 << LED3_PIN) );
 }
 
 void loop() {
@@ -19,19 +19,19 @@ void loop() {
 
   if (currentMillis - LED1_previousMillis >= LED1_INTERVAL) {
     LED1_previousMillis = currentMillis;
-    int val = (PIND & (1 << PD5)) >> 5;
-    PORTD = (val) ? ( PORTD & ~(1 << PD5) ) : ( PORTD | (1 << PD5) );
+    int val = (PIND & (1 << LED1_PIN)) >> LED1_PIN;
+    PORTD = (val) ? ( PORTD & ~(1 << LED1_PIN) ) : ( PORTD | (1 << LED1_PIN) );
   }
 
   if (currentMillis - LED2_previousMillis >= LED2_INTERVAL) {
     LED2_previousMillis = currentMillis;
-    int val = (PIND & (1 << PD6)) >> 6;
-    PORTD = (val) ? ( PORTD & ~(1 << PD6) ) : ( PORTD | (1 << PD6) );
+    int val = (PIND & (1 << LED2_PIN)) >> LED2_PIN;
+    PORTD = (val) ? ( PORTD & ~(1 << LED2_PIN) ) : ( PORTD | (1 << LED2_PIN) );
   }
 
   if (currentMillis - LED3_previousMillis >= LED3_INTERVAL) {
     LED3_previousMillis = currentMillis;
-    int val = (PIND & (1 << PD7)) >> 7;
-    PORTD = (val) ? ( PORTD & ~(1 << PD7) ) : ( PORTD | (1 << PD7) );
+    int val = (PIND & (1 << LED3_PIN)) >> LED3_PIN;
+    PORTD = (val) ? ( PORTD & ~(1 << LED3_PIN) ) : ( PORTD | (1 << LED3_PIN) );
   }
 }
