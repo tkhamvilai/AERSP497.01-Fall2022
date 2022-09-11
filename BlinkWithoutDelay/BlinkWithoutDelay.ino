@@ -20,18 +20,18 @@ void loop() {
   if (currentMillis - LED1_previousMillis >= LED1_INTERVAL) {
     LED1_previousMillis = currentMillis;
     int val = (PIND & (1 << PD5)) >> 5;
-    digitalWrite(LED1_PIN, !val);
+    PORTD = (val) ? ( PORTD & ~(1 << PD5) ) : ( PORTD | (1 << PD5) );
   }
 
   if (currentMillis - LED2_previousMillis >= LED2_INTERVAL) {
     LED2_previousMillis = currentMillis;
     int val = (PIND & (1 << PD6)) >> 6;
-    digitalWrite(LED2_PIN, !val);
+    PORTD = (val) ? ( PORTD & ~(1 << PD6) ) : ( PORTD | (1 << PD6) );
   }
 
   if (currentMillis - LED3_previousMillis >= LED3_INTERVAL) {
     LED3_previousMillis = currentMillis;
     int val = (PIND & (1 << PD7)) >> 7;
-    digitalWrite(LED3_PIN, !val);
+    PORTD = (val) ? ( PORTD & ~(1 << PD7) ) : ( PORTD | (1 << PD7) );
   }
 }
