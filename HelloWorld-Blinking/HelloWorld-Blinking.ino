@@ -66,12 +66,12 @@ void loop() {
 
 // void loop() { 
 //   digitalWrite(LED_PIN, HIGH);
-//   val = digitalRead(LED_PIN);
+//   val = digitalRead(INPUT_PIN);
 //   Serial.println(val);
 //   delay(1000);
 
 //   digitalWrite(LED_PIN, LOW);
-//   val = digitalRead(LED_PIN);
+//   val = digitalRead(INPUT_PIN);
 //   Serial.println(val);
 //   delay(1000);
 // }
