@@ -15,27 +15,34 @@ void Navigation::init()
 
 void Navigation::update(const Sensors& sens, const float& dt)
 {
-  // state propagation
-  this->process_model(sens);
-  this->s_predicted = euler_integration<state_t>(s, s_dot, dt);
+  /* state propagation */
+  this->process_model(sens, this->s, this->s_dot);
+  this->s_predicted = fisrt_order_euler_integration<state_t>(this->s, this->s_dot, dt);
 
-  // covariance propagation
+  /* Below is 2nd-order Euler Integration, but Arduino is kind of slow */
+  // state_t s_euler, s_dot_euler;
+  // this->process_model(sens, this->s, this->s_dot);
+  // s_euler = fisrt_order_euler_integration<state_t>(this->s, this->s_dot, dt);
+  // this->process_model(sens, s_euler, s_dot_euler);
+  // this->s_predicted = second_order_euler_integration<state_t>(this->s, this->s_dot, s_dot_euler, dt);
 
-  // compute Kalman gain
+  /* covariance propagation */
 
-  // measurement update
+  /* compute Kalman gain */
+
+  /* measurement update */
   this->s = this->s_predicted;
 
-  // covariance update
+  /* covariance update */
 }
 
-void Navigation::process_model(const Sensors& sens)
+void Navigation::process_model(const Sensors& sens, const state_t& state, state_t& state_dot)
 {
-  quat_t q = {this->s(0), this->s(1), this->s(2), this->s(3)}; // quaternion
-  vec_t bw = {this->s(13), this->s(14), this->s(15)}; // gyro bias
-  vec_t a = {sens.acc[0], sens.acc[1], sens.acc[2]}; // acceleration
-  vec_t ba = {this->s(10), this->s(11), this->s(12)}; // acc bias
-  vec_t g = {0, 0, -9.81};
+  quat_t q = {state(0), state(1), state(2), state(3)}; // quaternion
+  vec_t ba = {state(10), state(11), state(12)}; // acc bias
+  vec_t bw = {state(13), state(14), state(15)}; // gyro bias
+  vec_t a = {sens.acc[0], sens.acc[1], sens.acc[2]}; // acceleration  
+  vec_t g = {0, 0, -GRAVITY};
 
   normalize_quaternion(q);
   mat3x3_t T = rotation_from_quaternion(q);
@@ -61,16 +68,16 @@ void Navigation::process_model(const Sensors& sens)
   quat_t q_dot = f * q;
   vec_t v_dot = T * (a - ba) + g;
 
-  this->s_dot(0) = q_dot(0);
-  this->s_dot(1) = q_dot(1);
-  this->s_dot(2) = q_dot(2);
-  this->s_dot(3) = q_dot(3);
-  this->s_dot(4) = this->s(7);
-  this->s_dot(5) = this->s(8);
-  this->s_dot(6) = this->s(9);
-  this->s_dot(7) = v_dot(0);
-  this->s_dot(8) = v_dot(1);
-  this->s_dot(9) = v_dot(2);
+  state_dot(0) = q_dot(0);
+  state_dot(1) = q_dot(1);
+  state_dot(2) = q_dot(2);
+  state_dot(3) = q_dot(3);
+  state_dot(4) = state(7);
+  state_dot(5) = state(8);
+  state_dot(6) = state(9);
+  state_dot(7) = v_dot(0);
+  state_dot(8) = v_dot(1);
+  state_dot(9) = v_dot(2);
 
   quat2euler(q, this->angles(0), this->angles(1), this->angles(2));
 }

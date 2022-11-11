@@ -5,6 +5,14 @@
 
 #define DEG2RAD 0.0174533
 #define RAD2DEG 57.2958
+#define MILLI2BASE 0.001
+
+#define POZYX_GYR_SCALE 0.0625
+#define POZYX_MAG_SCALE 0.0625
+#define POZYX_EULER_SCALE 0.0625
+#define POZYX_QUAT_SCALE 1.0/16384.0
+
+#define GRAVITY 9.81
 
 using state_t = BLA::Matrix<16, 1>;
 using quat_t = BLA::Matrix<4, 1>;
@@ -18,9 +26,15 @@ void normalize_quaternion(quat_t&);
 void quat2euler( const quat_t& q, float& phi, float& theta, float& psi );
 
 template <typename T>
-T euler_integration(T state, T derivative, const float& dt)
+T fisrt_order_euler_integration(T state, T derivative, const float& dt)
 {
   return state + derivative * dt;
+}
+
+template <typename T>
+T second_order_euler_integration(T state, T derivative1, T derivative2, const float& dt)
+{
+  return state + (derivative1 + derivative2) * (dt * 0.5);
 }
 
 #endif

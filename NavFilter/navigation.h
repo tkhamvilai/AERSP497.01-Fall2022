@@ -26,7 +26,7 @@ public:
   euler_t angles;
 
 private:
-  void process_model(const Sensors&);
+  void process_model(const Sensors&, const state_t&, state_t&);
 };
 
 #endif

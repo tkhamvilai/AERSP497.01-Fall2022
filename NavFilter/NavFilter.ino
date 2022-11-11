@@ -21,11 +21,13 @@ void loop() {
 
   if(currentTime - nav_previousTime >= nav_interval) 
   {
+    // Serial.println(nav_previousTime);
     nav_previousTime = currentTime;
+
     sens.update();
     // sens.print();
 
-    float dt = nav_interval * 0.001;
+    float dt = nav_interval * 0.001; // convert to second
     nav.update(sens, dt);
     nav.print();
   }

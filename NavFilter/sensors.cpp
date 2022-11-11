@@ -41,9 +41,9 @@ void Sensors::update()
 
   for(uint8_t i = 0; i < 3; i++)
   {
-    this->gyr[i] = sensor_raw.angular_vel[i] * DEG2RAD * 0.0625; // convert to rad/s
-    this->acc[i] = sensor_raw.acceleration[i] * 0.001 * 9.81; // convert from milli-g to m/s^2
-    this->mag[i] = sensor_raw.magnetic[i] * 0.0625; // convert to µT
+    this->gyr[i] = sensor_raw.angular_vel[i] * DEG2RAD * POZYX_GYR_SCALE; // convert to rad/s
+    this->acc[i] = sensor_raw.acceleration[i] * MILLI2BASE * GRAVITY; // convert from milli-g to m/s^2
+    this->mag[i] = sensor_raw.magnetic[i] * POZYX_MAG_SCALE; // convert to µT
     if(i > 0) // convert to NED
     {
       this->gyr[i] *= -1.0; 
