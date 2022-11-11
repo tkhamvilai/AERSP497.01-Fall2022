@@ -1,6 +1,8 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
+#include "math_utils.h"
+
 class Sensors
 {
 public:

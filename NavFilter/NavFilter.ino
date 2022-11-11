@@ -1,7 +1,8 @@
 #include "sensors.h"
 #include "navigation.h"
 
-uint32_t last_millis;
+unsigned long nav_previousTime = 0;
+const long nav_interval = 10;
 
 Sensors sens;
 Navigation nav;
@@ -12,15 +13,20 @@ void setup() {
   sens.init();
   nav.init();
 
-  last_millis = millis();
-  delay(10);  
+  delay(100);  
 }
 
 void loop() {
-  sens.update();
-  // sens.print();
+  unsigned long currentTime = millis();
 
-  nav.update(sens);
-  nav.print();
-  while(1);
+  if(currentTime - nav_previousTime >= nav_interval) 
+  {
+    nav_previousTime = currentTime;
+    sens.update();
+    // sens.print();
+
+    float dt = nav_interval * 0.001;
+    nav.update(sens, dt);
+    nav.print();
+  }
 }
