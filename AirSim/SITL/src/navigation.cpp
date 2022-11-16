@@ -41,7 +41,7 @@ void Navigation::process_model( const Sensors& sens, const state_t& state, state
   quat_t q = { state( 0 ), state( 1 ), state( 2 ), state( 3 ) }; // quaternion
   vec_t ba = { state( 10 ), state( 11 ), state( 12 ) }; // acc bias
   vec_t bw = { state( 13 ), state( 14 ), state( 15 ) }; // gyro bias
-  vec_t a = { sens.acc[0], sens.acc[1], sens.acc[2] }; // acceleration  
+  vec_t a = { sens.sens.acc[0], sens.sens.acc[1], sens.sens.acc[2] }; // acceleration  
   vec_t g = { 0, 0, -GRAVITY };
 
   normalize_quaternion( q );
@@ -49,21 +49,21 @@ void Navigation::process_model( const Sensors& sens, const state_t& state, state
 
   mat4x4_t f;
   f.fill( 0 );
-  f( 0, 1 ) = -( sens.gyr[0] - bw( 0 ) ) * 0.5;
-  f( 0, 2 ) = -( sens.gyr[1] - bw( 1 ) ) * 0.5;
-  f( 0, 3 ) = -( sens.gyr[2] - bw( 2 ) ) * 0.5;
+  f( 0, 1 ) = -( sens.sens.gyr[0] - bw( 0 ) ) * 0.5;
+  f( 0, 2 ) = -( sens.sens.gyr[1] - bw( 1 ) ) * 0.5;
+  f( 0, 3 ) = -( sens.sens.gyr[2] - bw( 2 ) ) * 0.5;
 
-  f( 1, 0 ) = ( sens.gyr[0] - bw( 0 ) ) * 0.5;
-  f( 1, 2 ) = ( sens.gyr[2] - bw( 2 ) ) * 0.5;
-  f( 1, 3 ) = -( sens.gyr[1] - bw( 1 ) ) * 0.5;
+  f( 1, 0 ) = ( sens.sens.gyr[0] - bw( 0 ) ) * 0.5;
+  f( 1, 2 ) = ( sens.sens.gyr[2] - bw( 2 ) ) * 0.5;
+  f( 1, 3 ) = -( sens.sens.gyr[1] - bw( 1 ) ) * 0.5;
 
-  f( 2, 0 ) = ( sens.gyr[1] - bw( 1 ) ) * 0.5;
-  f( 2, 1 ) = -( sens.gyr[2] - bw( 2 ) ) * 0.5;
-  f( 2, 3 ) = ( sens.gyr[0] - bw( 0 ) ) * 0.5;
+  f( 2, 0 ) = ( sens.sens.gyr[1] - bw( 1 ) ) * 0.5;
+  f( 2, 1 ) = -( sens.sens.gyr[2] - bw( 2 ) ) * 0.5;
+  f( 2, 3 ) = ( sens.sens.gyr[0] - bw( 0 ) ) * 0.5;
 
-  f( 3, 0 ) = ( sens.gyr[2] - bw( 2 ) ) * 0.5;
-  f( 3, 1 ) = ( sens.gyr[1] - bw( 1 ) ) * 0.5;
-  f( 3, 2 ) = -( sens.gyr[0] - bw( 0 ) ) * 0.5;
+  f( 3, 0 ) = ( sens.sens.gyr[2] - bw( 2 ) ) * 0.5;
+  f( 3, 1 ) = ( sens.sens.gyr[1] - bw( 1 ) ) * 0.5;
+  f( 3, 2 ) = -( sens.sens.gyr[0] - bw( 0 ) ) * 0.5;
 
   quat_t q_dot = f * q;
   vec_t v_dot = T * ( a - ba ) + g;
