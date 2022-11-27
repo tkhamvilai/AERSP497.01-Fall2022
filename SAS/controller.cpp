@@ -44,6 +44,21 @@ void Controller::altitude_controller(const guidance_t& cmd)
   this->thr_out = cmd.THR;
 }
 
+void Controller::mixer()
+{
+  this->roll_out = constrain(this->roll_out, -PWM_LIMIT, PWM_LIMIT);
+  this->pitch_out = constrain(this->pitch_out, -PWM_LIMIT, PWM_LIMIT);
+  this->yaw_out = constrain(this->yaw_out, -PWM_LIMIT, PWM_LIMIT);
+  this->thr_out = constrain(this->yaw_out, MIN_PWM_OUT, MAX_PWM_OUT);
+
+  this->pwm_out[FRONT_RIGHT] = this->thr_out - this->roll_out + this->pitch_out + this->yaw_out;
+  this->pwm_out[FRONT_LEFT]  = this->thr_out + this->roll_out + this->pitch_out - this->yaw_out;
+  this->pwm_out[REAR_LEFT]   = this->thr_out + this->roll_out - this->pitch_out + this->yaw_out;
+  this->pwm_out[REAR_RIGHT]  = this->thr_out - this->roll_out - this->pitch_out - this->yaw_out;
+
+  for(uint8_t i=0; i<MOTOR_NUM; i++) this->pwm_out[i] = constrain(this->pwm_out[i], MIN_PWM_OUT, MAX_PWM_OUT);
+}
+
 void Controller::print()
 {
 

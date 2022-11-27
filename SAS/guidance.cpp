@@ -47,7 +47,7 @@ void Guidance::update(const sens_t& sens, const state_t& state, const rc_t& rc)
   if(rc.YAW > rc.YAW_MID){
     this->cmd.YAW_RATE = linear_map<float, int16_t>(rc.YAW, rc.YAW_MID, rc.YAW_MAX, 0, YAW_RATE_LIMIT);
   }
-  else if(rc.YAW > rc.YAW_MID){
+  else if(rc.YAW < rc.YAW_MID){
     this->cmd.YAW_RATE = linear_map<float, int16_t>(rc.YAW, rc.YAW_MIN, rc.YAW_MID, -YAW_RATE_LIMIT, 0);
   }
   else{

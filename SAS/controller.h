@@ -30,6 +30,7 @@ public:
 private:
   void attitude_controller(const sens_t&, const guidance_t&);
   void altitude_controller(const guidance_t&);
+  void mixer();
 };
 
 #endif
