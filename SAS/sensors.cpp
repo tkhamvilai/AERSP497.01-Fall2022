@@ -1,5 +1,4 @@
 #include "sensors.h"
-#include "math_utils.h"
 
 #include <Pozyx.h>
 #include <Pozyx_definitions.h>

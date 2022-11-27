@@ -1,9 +1,6 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include "sensors.h"
-#include "navigation.h"
-#include "receiver.h"
 #include "math_utils.h"
 
 class Controller

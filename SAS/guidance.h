@@ -1,9 +1,6 @@
 #ifndef GUIDANCE_H
 #define GUIDANCE_H
 
-#include "sensors.h"
-#include "navigation.h"
-#include "receiver.h"
 #include "math_utils.h"
 
 class Guidance

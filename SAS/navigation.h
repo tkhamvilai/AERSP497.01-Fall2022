@@ -1,7 +1,6 @@
 #ifndef NAVIGATION_H
 #define NAVIGATION_H
 
-#include "sensors.h"
 #include "math_utils.h"
 
 /*

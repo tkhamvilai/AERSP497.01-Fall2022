@@ -34,6 +34,15 @@ using mat3x3_t = Matrix<3, 3>;
 using mat4x4_t = Matrix<4, 4>;
 using euler_t = Matrix<3, 1>;
 
+struct sens_t
+{
+  float gyr[3];
+  float acc[3];
+  float mag[3];
+  float euler[3];
+  float quat[4];
+};
+
 struct rc_t
 {
   int16_t ROLL;
