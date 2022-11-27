@@ -22,6 +22,13 @@ Receiver::Receiver()
   this->rc_in.AUX_MIN = MIN_PWM_IN;
   this->rc_in.AUX2_MIN = MIN_PWM_IN;
 
+  this->rc_in.ROLL_MID = MID_PWM_IN;
+  this->rc_in.PITCH_MID = MID_PWM_IN;
+  this->rc_in.THR_MID = MID_PWM_IN;
+  this->rc_in.YAW_MID = MID_PWM_IN;
+  this->rc_in.AUX_MID = MID_PWM_IN;
+  this->rc_in.AUX2_MID = MID_PWM_IN;
+
   this->rc_in.ROLL_MAX = MAX_PWM_IN;
   this->rc_in.PITCH_MAX = MAX_PWM_IN;
   this->rc_in.THR_MAX = MAX_PWM_IN;

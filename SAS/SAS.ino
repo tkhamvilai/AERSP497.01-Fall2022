@@ -63,10 +63,12 @@ void loop() {
     cntrl.update(sens.data, nav.s, gd.cmd);
     // cntrl.print();
 
-    if(rc.rc_in.AUX2 < ARM_DISARM_PWM_THRESHOLD)
+    if(rc.rc_in.AUX2 < ARM_DISARM_PWM_THRESHOLD){
       motors.stop();
-    else
+    }
+    else{
       motors.update(cntrl.pwm_out);
+    }
     // motors.print();
   }
 }

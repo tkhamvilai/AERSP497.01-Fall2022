@@ -15,6 +15,7 @@
 #define MIN_PWM_OUT 1000
 #define MAX_PWM_OUT 2000
 #define MIN_PWM_IN 1000
+#define MID_PWM_IN 1500
 #define MAX_PWM_IN 2000
 #define ARM_DISARM_PWM_THRESHOLD 1500
 
@@ -53,6 +54,13 @@ struct rc_t
   int16_t YAW_MIN;
   int16_t AUX_MIN;
   int16_t AUX2_MIN;
+
+  int16_t ROLL_MID;
+  int16_t PITCH_MID;
+  int16_t THR_MID;
+  int16_t YAW_MID;
+  int16_t AUX_MID;
+  int16_t AUX2_MID;
 
   int16_t ROLL_MAX;
   int16_t PITCH_MAX;
