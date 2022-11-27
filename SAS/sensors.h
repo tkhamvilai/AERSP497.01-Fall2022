@@ -1,7 +1,14 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
-#include "math_utils.h"
+struct sens_t
+{
+  float gyr[3];
+  float acc[3];
+  float mag[3];
+  float euler[3];
+  float quat[4];
+};
 
 class Sensors
 {
@@ -13,11 +20,7 @@ public:
   void update();
   void print();
 
-  float gyr[3];
-  float acc[3];
-  float mag[3];
-  float euler[3];
-  float quat[4];
+  sens_t data;
 
 private:
 };

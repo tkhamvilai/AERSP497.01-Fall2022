@@ -1,4 +1,5 @@
 #include "sensors.h"
+#include "math_utils.h"
 
 #include <Pozyx.h>
 #include <Pozyx_definitions.h>
@@ -8,13 +9,13 @@ Sensors::Sensors()
 {
   for(uint8_t i = 0; i < 3; i++)
   {
-    this->gyr[i] = 0;
-    this->acc[i] = 0;
-    this->mag[i] = 0;
-    this->euler[i] = 0;
-    this->quat[i] = 0;
+    this->data.gyr[i]   = 0;
+    this->data.acc[i]   = 0;
+    this->data.mag[i]   = 0;
+    this->data.euler[i] = 0;
+    this->data.quat[i]  = 0;
   }
-  this->quat[0] = 1;
+  this->data.quat[0] = 1;
 }
 
 Sensors::~Sensors() {}
@@ -44,44 +45,44 @@ void Sensors::update()
 
   for(uint8_t i = 0; i < 3; i++)
   {
-    // this->gyr[i] = sensor_raw.angular_vel[i] * DEG2RAD * POZYX_GYR_SCALE; // convert to rad/s
-    // this->acc[i] = sensor_raw.acceleration[i] * MILLI2BASE * GRAVITY; // convert from milli-g to m/s^2
-    // this->mag[i] = sensor_raw.magnetic[i] * POZYX_MAG_SCALE; // convert to µT
-    this->euler[i] = sensor_raw.euler_angles[i] * POZYX_EULER_SCALE; // convert to deg
+    // this->data.gyr[i] = sensor_raw.angular_vel[i] * DEG2RAD * POZYX_GYR_SCALE; // convert to rad/s
+    // this->data.acc[i] = sensor_raw.acceleration[i] * MILLI2BASE * GRAVITY; // convert from milli-g to m/s^2
+    // this->data.mag[i] = sensor_raw.magnetic[i] * POZYX_MAG_SCALE; // convert to µT
+    this->data.euler[i] = sensor_raw.euler_angles[i] * POZYX_EULER_SCALE; // convert to deg
     if(i > 0) // convert to NED
     {
-      // this->gyr[i] *= -1.0; 
-      // this->acc[i] *= -1.0; 
-      // this->mag[i] *= -1.0;
-      this->euler[i] *= -1.0;
+      // this->data.gyr[i] *= -1.0; 
+      // this->data.acc[i] *= -1.0; 
+      // this->data.mag[i] *= -1.0;
+      this->data.euler[i] *= -1.0;
     }
   }
 }
 
 void Sensors::print()
 {
-  // Serial.print(this->gyr[0]);
+  // Serial.print(this->data.gyr[0]);
   // Serial.print(",");
-  // Serial.print(this->gyr[1]);
+  // Serial.print(this->data.gyr[1]);
   // Serial.print(",");
-  // Serial.print(this->gyr[2]);
+  // Serial.print(this->data.gyr[2]);
   // Serial.print(",");
-  // Serial.print(this->acc[0]);
+  // Serial.print(this->data.acc[0]);
   // Serial.print(",");
-  // Serial.print(this->acc[1]);
+  // Serial.print(this->data.acc[1]);
   // Serial.print(",");
-  // Serial.print(this->acc[2]);
+  // Serial.print(this->data.acc[2]);
   // Serial.print(",");
-  // Serial.print(this->mag[0]);
+  // Serial.print(this->data.mag[0]);
   // Serial.print(",");
-  // Serial.print(this->mag[1]);
+  // Serial.print(this->data.mag[1]);
   // Serial.print(",");
-  // Serial.print(this->mag[2]);
+  // Serial.print(this->data.mag[2]);
   // Serial.print(",");
-  Serial.print(this->euler[0]);
+  Serial.print(this->data.euler[0]);
   Serial.print(",");
-  Serial.print(this->euler[1]);
+  Serial.print(this->data.euler[1]);
   Serial.print(",");
-  Serial.print(this->euler[2]);
+  Serial.print(this->data.euler[2]);
   Serial.println();
 }

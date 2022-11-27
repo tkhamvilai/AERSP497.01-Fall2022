@@ -15,7 +15,7 @@ public:
   ~Navigation();
 
   void init();
-  void update(const Sensors&, const float&);
+  void update(const sens_t&, const float&);
 
   void print();
 
@@ -26,7 +26,7 @@ public:
   euler_t angles;
 
 private:
-  void process_model(const Sensors&, const state_t&, state_t&);
+  void process_model(const sens_t&, const state_t&, state_t&);
 };
 
 #endif

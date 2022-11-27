@@ -13,7 +13,7 @@ void Navigation::init()
   this->s(0) = 1; // q0
 }
 
-void Navigation::update(const Sensors& sens, const float& dt)
+void Navigation::update(const sens_t& sens, const float& dt)
 {
   /* state propagation */
   this->process_model(sens, this->s, this->s_dot);
@@ -36,7 +36,7 @@ void Navigation::update(const Sensors& sens, const float& dt)
   /* covariance update */
 }
 
-void Navigation::process_model(const Sensors& sens, const state_t& state, state_t& state_dot)
+void Navigation::process_model(const sens_t& sens, const state_t& state, state_t& state_dot)
 {
   quat_t q = {state(0), state(1), state(2), state(3)}; // quaternion
   vec_t ba = {state(10), state(11), state(12)}; // acc bias
