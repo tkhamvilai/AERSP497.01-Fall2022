@@ -4,6 +4,11 @@
 #include <Pozyx_definitions.h>
 #include <Wire.h>
 
+#define POZYX_GYR_SCALE 0.0625
+#define POZYX_MAG_SCALE 0.0625
+#define POZYX_EULER_SCALE 0.0625
+#define POZYX_QUAT_SCALE 1.0/16384.0
+
 Sensors::Sensors()
 {
   for(uint8_t i = 0; i < 3; i++)
