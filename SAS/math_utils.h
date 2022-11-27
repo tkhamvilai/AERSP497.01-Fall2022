@@ -7,7 +7,7 @@
 #define DEG2RAD 0.0174533
 #define RAD2DEG 57.2958
 #define MILLI2BASE 0.001
-#define GRAVITY 9.81
+#define GRAVITY 9.81 // m/s^2
 
 #define MOTOR_NUM 4
 #define MIN_DUTY_CYCLE 125
@@ -16,10 +16,11 @@
 #define MAX_PWM_OUT 2000
 #define MIN_PWM_IN 1000
 #define MAX_PWM_IN 2000
-#define ROLL_MID_PWM 1500
-#define PITCH_MID_PWM 1500
-#define YAW_MID_PWM 1500
 #define ARM_DISARM_PWM_THRESHOLD 1500
+
+#define ROLL_ANGLE_LIMIT 30 // deg
+#define PITCH_ANGLE_LIMIT 30 // deg
+#define YAW_RATE_LIMIT 60 * DEG2RAD // rad/s
 
 using state_t = Matrix<16, 1>;
 using quat_t = Matrix<4, 1>;
@@ -45,17 +46,31 @@ struct rc_t
   int16_t YAW;
   int16_t AUX;
   int16_t AUX2;
+
+  int16_t ROLL_MIN;
+  int16_t PITCH_MIN;
+  int16_t THR_MIN;
+  int16_t YAW_MIN;
+  int16_t AUX_MIN;
+  int16_t AUX2_MIN;
+
+  int16_t ROLL_MAX;
+  int16_t PITCH_MAX;
+  int16_t THR_MAX;
+  int16_t YAW_MAX;
+  int16_t AUX_MAX;
+  int16_t AUX2_MAX;
 };
 
 struct guidance_t
 {
-  int16_t THR;
-  int16_t ROLL;
-  int16_t PITCH;
-  int16_t YAW;
-  int16_t ROLL_RATE;
-  int16_t PITCH_RATE;
-  int16_t YAW_RATE;
+  float THR;
+  float ROLL;
+  float PITCH;
+  float YAW;
+  float ROLL_RATE;
+  float PITCH_RATE;
+  float YAW_RATE;
 };
 
 enum motor 
@@ -90,6 +105,12 @@ template <typename T>
 T second_order_euler_integration(T state, T derivative1, T derivative2, const float& dt)
 {
   return state + (derivative1 + derivative2) * (dt * 0.5);
+}
+
+template <typename T_out, typename T_in>
+T_out linear_map(T_in x, T_in in_min, T_in in_max, T_out out_min, T_out out_max) 
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
 #endif

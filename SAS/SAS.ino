@@ -34,6 +34,7 @@ void setup() {
   {
     rc.update();
     motors.stop();
+    delay(100);
   }
   while(rc.rc_in.AUX2 >= ARM_DISARM_PWM_THRESHOLD);    
 }

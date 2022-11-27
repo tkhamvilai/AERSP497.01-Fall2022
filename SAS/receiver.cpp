@@ -13,6 +13,21 @@ Receiver::Receiver()
   this->rc_in.YAW = MIN_PWM_IN;
   this->rc_in.AUX = MIN_PWM_IN;
   this->rc_in.AUX2 = MIN_PWM_IN;
+
+  // replace this with rc calibration data
+  this->rc_in.ROLL_MIN = MIN_PWM_IN;
+  this->rc_in.PITCH_MIN = MIN_PWM_IN;
+  this->rc_in.THR_MIN = MIN_PWM_IN;
+  this->rc_in.YAW_MIN = MIN_PWM_IN;
+  this->rc_in.AUX_MIN = MIN_PWM_IN;
+  this->rc_in.AUX2_MIN = MIN_PWM_IN;
+
+  this->rc_in.ROLL_MAX = MAX_PWM_IN;
+  this->rc_in.PITCH_MAX = MAX_PWM_IN;
+  this->rc_in.THR_MAX = MAX_PWM_IN;
+  this->rc_in.YAW_MAX = MAX_PWM_IN;
+  this->rc_in.AUX_MAX = MAX_PWM_IN;
+  this->rc_in.AUX2_MAX = MAX_PWM_IN;
 }
 
 Receiver::~Receiver()
@@ -78,10 +93,10 @@ void Receiver::mapRCcmd()
     this->rcData[chan] = constrain(this->rcData[chan], MIN_PWM_IN, MAX_PWM_IN);
   }
   
-  this->rc_in.ROLL  = this->rcData[ROLL]  - ROLL_MID_PWM;
-  this->rc_in.PITCH = this->rcData[PITCH] - PITCH_MID_PWM;
+  this->rc_in.ROLL  = this->rcData[ROLL];
+  this->rc_in.PITCH = this->rcData[PITCH];
   this->rc_in.THR   = this->rcData[THR];
-  this->rc_in.YAW   = this->rcData[YAW]   - YAW_MID_PWM;
+  this->rc_in.YAW   = this->rcData[YAW];
   this->rc_in.AUX   = this->rcData[AUX];
   this->rc_in.AUX2  = this->rcData[AUX2];
 }
