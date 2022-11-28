@@ -49,19 +49,10 @@ void loop() {
     float dt = interval * 0.001; // convert to second
 
     sens.update();
-    // sens.print();
-
     // nav.update(sens.data, dt);
-    // nav.print();
-
     rc.update();
-    // rc.print();
-
     gd.update(sens.data, nav.s, rc.rc_in);
-    // gd.print();
-
     cntrl.update(sens.data, nav.s, gd.cmd);
-    // cntrl.print();
 
     if(rc.rc_in.AUX2 < ARM_DISARM_PWM_THRESHOLD){
       motors.stop();
@@ -69,6 +60,17 @@ void loop() {
     else{
       motors.update(cntrl.pwm_out);
     }
-    // motors.print();
+
+    print();
   }
+}
+
+void print()
+{
+  sens.print();
+  nav.print();
+  rc.print();
+  gd.print();
+  cntrl.print();
+  motors.print();  
 }
