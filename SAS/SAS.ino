@@ -4,6 +4,7 @@
 #include "controller.h"
 #include "actuators.h"
 #include "guidance.h"
+#include "led.h"
 
 unsigned long previousTime = 0;
 const long interval = 2; // millisecond
@@ -14,10 +15,12 @@ Receiver rc;
 Guidance gd;
 Controller cntrl;
 Actuators motors;
+LED led;
 
-void setup() {
+void setup() {  
   Serial.begin(115200);
-  
+
+  led.init();
   sens.init();
   nav.init();
   rc.init();
@@ -25,9 +28,8 @@ void setup() {
   cntrl.init();
   motors.init();
 
-  motors.calibrate();
+//  motors.calibrate();
   motors.stop();
-
   delay(3000);
 
   do
@@ -56,9 +58,11 @@ void loop() {
 
     if(rc.rc_in.AUX2 < ARM_DISARM_PWM_THRESHOLD){
       motors.stop();
+      led.off();
     }
     else{
       motors.update(cntrl.pwm_out);
+      led.toggle();
     }
 
     print();
@@ -67,10 +71,10 @@ void loop() {
 
 void print()
 {
-  sens.print();
-  nav.print();
-  rc.print();
-  gd.print();
-  cntrl.print();
-  motors.print();  
+//  sens.print();
+//  nav.print();
+//  rc.print();
+//  gd.print();
+//  cntrl.print();
+//  motors.print();
 }

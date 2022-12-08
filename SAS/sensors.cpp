@@ -46,43 +46,46 @@ void Sensors::update()
     Pozyx.getInterruptStatus(&interrupt_status);
     return;
   }
+  
+  // YPR to RPY and NED
+  this->data.euler[0] = sensor_raw.euler_angles[2] * POZYX_EULER_SCALE * -1.0; // convert to deg
+  this->data.euler[1] = sensor_raw.euler_angles[1] * POZYX_EULER_SCALE; // convert to deg
+  this->data.euler[2] = sensor_raw.euler_angles[0] * POZYX_EULER_SCALE; // convert to deg
 
   for(uint8_t i = 0; i < 3; i++)
   {
-    // this->data.gyr[i] = sensor_raw.angular_vel[i] * DEG2RAD * POZYX_GYR_SCALE; // convert to rad/s
-    // this->data.acc[i] = sensor_raw.acceleration[i] * MILLI2BASE * GRAVITY; // convert from milli-g to m/s^2
-    // this->data.mag[i] = sensor_raw.magnetic[i] * POZYX_MAG_SCALE; // convert to µT
-    this->data.euler[i] = sensor_raw.euler_angles[i] * POZYX_EULER_SCALE; // convert to deg
+     this->data.gyr[i] = sensor_raw.angular_vel[i] * DEG2RAD * POZYX_GYR_SCALE; // convert to rad/s
+//     this->data.acc[i] = sensor_raw.acceleration[i] * MILLI2BASE * GRAVITY; // convert from milli-g to m/s^2
+//     this->data.mag[i] = sensor_raw.magnetic[i] * POZYX_MAG_SCALE; // convert to µT
     if(i > 0) // convert to NED
     {
-      // this->data.gyr[i] *= -1.0; 
-      // this->data.acc[i] *= -1.0; 
-      // this->data.mag[i] *= -1.0;
-      this->data.euler[i] *= -1.0;
+       this->data.gyr[i] *= -1.0; 
+       this->data.acc[i] *= -1.0; 
+       this->data.mag[i] *= -1.0;
     }
   }
 }
 
 void Sensors::print()
 {
-  // Serial.print(this->data.gyr[0]);
-  // Serial.print(",");
-  // Serial.print(this->data.gyr[1]);
-  // Serial.print(",");
-  // Serial.print(this->data.gyr[2]);
-  // Serial.print(",");
-  // Serial.print(this->data.acc[0]);
-  // Serial.print(",");
-  // Serial.print(this->data.acc[1]);
-  // Serial.print(",");
-  // Serial.print(this->data.acc[2]);
-  // Serial.print(",");
-  // Serial.print(this->data.mag[0]);
-  // Serial.print(",");
-  // Serial.print(this->data.mag[1]);
-  // Serial.print(",");
-  // Serial.print(this->data.mag[2]);
-  // Serial.print(",");
+  Serial.print(this->data.gyr[0]);
+  Serial.print(",");
+  Serial.print(this->data.gyr[1]);
+  Serial.print(",");
+  Serial.print(this->data.gyr[2]);
+  Serial.print(",");
+//  Serial.print(this->data.acc[0]);
+//  Serial.print(",");
+//  Serial.print(this->data.acc[1]);
+//  Serial.print(",");
+//  Serial.print(this->data.acc[2]);
+//  Serial.print(",");
+//  Serial.print(this->data.mag[0]);
+//  Serial.print(",");
+//  Serial.print(this->data.mag[1]);
+//  Serial.print(",");
+//  Serial.print(this->data.mag[2]);
+//  Serial.print(",");
   Serial.print(this->data.euler[0]);
   Serial.print(",");
   Serial.print(this->data.euler[1]);

@@ -26,6 +26,7 @@ void Controller::update(const sens_t& sens, const state_t& state, const guidance
 {
   this->attitude_controller(sens, cmd);
   this->altitude_controller(cmd);
+  this->mixer();
 }
 
 void Controller::attitude_controller(const sens_t& sens, const guidance_t& cmd)
@@ -49,7 +50,7 @@ void Controller::mixer()
   this->roll_out = constrain(this->roll_out, -PWM_LIMIT, PWM_LIMIT);
   this->pitch_out = constrain(this->pitch_out, -PWM_LIMIT, PWM_LIMIT);
   this->yaw_out = constrain(this->yaw_out, -PWM_LIMIT, PWM_LIMIT);
-  this->thr_out = constrain(this->yaw_out, MIN_PWM_OUT, MAX_PWM_OUT);
+  this->thr_out = constrain(this->thr_out, MIN_PWM_OUT, MAX_PWM_OUT);
 
   this->pwm_out[FRONT_RIGHT] = this->thr_out - this->roll_out + this->pitch_out + this->yaw_out;
   this->pwm_out[FRONT_LEFT]  = this->thr_out + this->roll_out + this->pitch_out - this->yaw_out;
@@ -61,5 +62,15 @@ void Controller::mixer()
 
 void Controller::print()
 {
+//  Serial.print("cntrl out: ");
+//  Serial.print(  this->thr_out);   Serial.print(", "); 
+//  Serial.print(  this->roll_out);  Serial.print(", "); 
+//  Serial.print(  this->pitch_out); Serial.print(", ");  
+//  Serial.println(this->yaw_out);
 
+  Serial.print("pwm out: ");
+  Serial.print(  this->pwm_out[FRONT_RIGHT]); Serial.print(", "); 
+  Serial.print(  this->pwm_out[FRONT_LEFT]);  Serial.print(", "); 
+  Serial.print(  this->pwm_out[REAR_LEFT]);   Serial.print(", ");  
+  Serial.println(this->pwm_out[REAR_RIGHT]);
 }

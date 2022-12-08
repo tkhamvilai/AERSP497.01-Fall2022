@@ -6,7 +6,7 @@
 
 #define RC_CHANS 6
 #define PCINT_PIN_COUNT 6
-#define PCINT_RX_BITS (1<<2),(1<<4),(1<<5),(1<<6),(1<<7),(1<<0)
+#define PCINT_RX_BITS (1<<4),(1<<5),(1<<6),(1<<7),(1<<0),(1<<4)
 #define RX_PCINT_PIN_PORT PIND
 #define RX_PCINT_PIN_PORT2 PINB
 

@@ -6,9 +6,9 @@
 #define K_ROLL_ANGLE 1.0
 #define K_PITCH_ANGLE 1.0
 
-#define K_ROLL_RATE 1.0
-#define K_PITCH_RATE 1.0
-#define K_YAW_RATE 1.0
+#define K_ROLL_RATE 10.0
+#define K_PITCH_RATE 10.0
+#define K_YAW_RATE 10.0
 
 class Controller
 {

@@ -57,5 +57,9 @@ void Guidance::update(const sens_t& sens, const state_t& state, const rc_t& rc)
 
 void Guidance::print()
 {
-
+  Serial.print("Guidance: ");
+  Serial.print(  this->cmd.THR);   Serial.print(", "); 
+  Serial.print(  this->cmd.ROLL);  Serial.print(", "); 
+  Serial.print(  this->cmd.PITCH); Serial.print(", ");  
+  Serial.println(this->cmd.YAW_RATE);
 }

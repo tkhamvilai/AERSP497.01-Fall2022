@@ -15,26 +15,26 @@ Receiver::Receiver()
   this->rc_in.AUX2 = MIN_PWM_IN;
 
   // replace this with rc calibration data
-  this->rc_in.ROLL_MIN = MIN_PWM_IN;
-  this->rc_in.PITCH_MIN = MIN_PWM_IN;
-  this->rc_in.THR_MIN = MIN_PWM_IN;
-  this->rc_in.YAW_MIN = MIN_PWM_IN;
-  this->rc_in.AUX_MIN = MIN_PWM_IN;
-  this->rc_in.AUX2_MIN = MIN_PWM_IN;
+  this->rc_in.ROLL_MIN = 1089;
+  this->rc_in.PITCH_MIN = 1090;
+  this->rc_in.THR_MIN = 1100;
+  this->rc_in.YAW_MIN = 1102;
+  this->rc_in.AUX_MIN = 1101;
+  this->rc_in.AUX2_MIN = 1101;
 
-  this->rc_in.ROLL_MID = MID_PWM_IN;
-  this->rc_in.PITCH_MID = MID_PWM_IN;
-  this->rc_in.THR_MID = MID_PWM_IN;
-  this->rc_in.YAW_MID = MID_PWM_IN;
-  this->rc_in.AUX_MID = MID_PWM_IN;
-  this->rc_in.AUX2_MID = MID_PWM_IN;
+  this->rc_in.ROLL_MID = 1510;
+  this->rc_in.PITCH_MID = 1510;
+  this->rc_in.THR_MID = 1515;
+  this->rc_in.YAW_MID = 1514;
+  this->rc_in.AUX_MID = 1520;
+  this->rc_in.AUX2_MID = 1521;
 
-  this->rc_in.ROLL_MAX = MAX_PWM_IN;
-  this->rc_in.PITCH_MAX = MAX_PWM_IN;
-  this->rc_in.THR_MAX = MAX_PWM_IN;
-  this->rc_in.YAW_MAX = MAX_PWM_IN;
-  this->rc_in.AUX_MAX = MAX_PWM_IN;
-  this->rc_in.AUX2_MAX = MAX_PWM_IN;
+  this->rc_in.ROLL_MAX = 1931;
+  this->rc_in.PITCH_MAX = 1931;
+  this->rc_in.THR_MAX = 1936;
+  this->rc_in.YAW_MAX = 1936;
+  this->rc_in.AUX_MAX = 1941;
+  this->rc_in.AUX2_MAX = 1941;
 }
 
 Receiver::~Receiver()
@@ -47,13 +47,13 @@ void Receiver::init()
   DDRD &= ~(_BV(DDD2) | _BV(DDD4) | _BV(DDD5) | _BV(DDD6) | _BV(DDD7)); //set PORTD PIN 2,4,5,6,7 as INPUTS
   PORTD |= (_BV(PORTD2) | _BV(PORTD4) | _BV(PORTD5) | _BV(PORTD6) | _BV(PORTD7)); //pull-up HIGH
 
-  DDRB &= ~(_BV(DDB0)); //set PORTB PIN 0 as an INPUT
-  PORTB |= (_BV(PORTB0)); //pull-up HIGH
+  DDRB &= ~(_BV(DDB0) | _BV(DDD4)); //set PORTB PIN 0 as an INPUT
+  PORTB |= (_BV(PORTB0) | _BV(PORTD4)); //pull-up HIGH
 
   cli();
   PCICR  |= (_BV(PCIE2) | _BV(PCIE0)); // turn on PCMSK2 and PCMSK0
   PCMSK2 |= (_BV(PCINT18) | _BV(PCINT20) | _BV(PCINT21) | _BV(PCINT22) | _BV(PCINT23)); // enable Pin Change Interrupt for PORTD PIN 2,4,5,6,7
-  PCMSK0 |= (_BV(PCINT0)); // enable Pin Change Interrupt for PORTB PIN 0
+  PCMSK0 |= (_BV(PCINT0) | _BV(PCINT4)); // enable Pin Change Interrupt for PORTB PIN 0
   sei();
 }
 
@@ -154,7 +154,6 @@ void RX_PIN_MASK(){
   RX_PIN_CHECK(PITCH);
   RX_PIN_CHECK(THR);
   RX_PIN_CHECK(YAW);
-  RX_PIN_CHECK(AUX);
 }
 
 void RX_PIN_MASK2(){
@@ -170,6 +169,7 @@ void RX_PIN_MASK2(){
   sei(); //re-enable other interrupts at this point, the rest of this interrupt is not so time critical and can be interrupted safely
   PCintLast = pin; //memorize the state of all PIN7:0
 
+  RX_PIN_CHECK(AUX);
   RX_PIN_CHECK(AUX2);
 }
 

@@ -73,5 +73,9 @@ void Actuators::update(uint16_t pwm[MOTOR_NUM])
 
 void Actuators::print()
 {
-
+  Serial.print("Actuators: ");
+  Serial.print(  OCR2B);   Serial.print(", "); 
+  Serial.print(  OCR1A);  Serial.print(", "); 
+  Serial.print(  OCR1B); Serial.print(", ");  
+  Serial.println(OCR2A);
 }
