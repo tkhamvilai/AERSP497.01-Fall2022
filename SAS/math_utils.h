@@ -19,8 +19,8 @@
 #define MAX_PWM_IN 2000
 #define ARM_DISARM_PWM_THRESHOLD 1800
 
-#define ROLL_ANGLE_LIMIT 30 // deg
-#define PITCH_ANGLE_LIMIT 30 // deg
+#define ROLL_ANGLE_LIMIT 60 // deg
+#define PITCH_ANGLE_LIMIT 60 // deg
 #define YAW_RATE_LIMIT 60 // deg/s
 #define PWM_LIMIT 500
 
@@ -77,9 +77,6 @@ struct guidance_t
   float ROLL;
   float PITCH;
   float YAW;
-  float ROLL_RATE;
-  float PITCH_RATE;
-  float YAW_RATE;
 };
 
 enum motor 

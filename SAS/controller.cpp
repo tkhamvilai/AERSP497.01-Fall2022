@@ -25,23 +25,22 @@ void Controller::init()
 void Controller::update(const sens_t& sens, const state_t& state, const guidance_t& cmd)
 {
   this->attitude_controller(sens, cmd);
-  this->angular_rate_controller(sens, cmd);
   this->altitude_controller(cmd);
   this->mixer();
-}
-
-void Controller::angular_rate_controller(const sens_t& sens, const guidance_t& cmd)
-{
-  this->roll_out  = K_ROLL_RATE  * (cmd.ROLL     - sens.gyr[0]);
-  this->pitch_out = K_PITCH_RATE * (cmd.PITCH    - sens.gyr[1]);
-  this->yaw_out   = K_YAW_RATE   * (cmd.YAW_RATE - sens.gyr[2]);
 }
 
 void Controller::attitude_controller(const sens_t& sens, const guidance_t& cmd)
 {
   // attitude and rate control for roll and pitch
-  // this->roll_out = K_ROLL_ANGLE*(cmd.ROLL - sens.euler[0])
-  // this->pitch_out = K_PITCH_ANGLE*(cmd.PITCH - sens.euler[1])
+  this->roll_out  = P_ROLL_ANGLE*(FF_ROLL*cmd.ROLL - sens.euler[0]) - P_ROLL_RATE*sens.gyr[0] - D_ROLL_RATE*(sens.gyr[0] - this->last_rate[0]);
+  this->pitch_out = P_PITCH_ANGLE*(FF_PITCH*cmd.PITCH - sens.euler[1]) - P_PITCH_RATE*sens.gyr[1] - D_PITCH_RATE*(sens.gyr[1] - this->last_rate[1]);
+
+  this->yaw_out   = P_YAW_RATE * (cmd.YAW - sens.gyr[2]);
+
+  for(uint8_t i = 0; i < 3; i++)
+  {
+    this->last_rate[i] = sens.gyr[i];
+  }
 }
 
 void Controller::altitude_controller(const guidance_t& cmd)

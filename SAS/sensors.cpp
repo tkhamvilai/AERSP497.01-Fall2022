@@ -85,8 +85,8 @@ void Sensors::update()
 
     for(uint8_t i = 0; i < 3; i++)
     {
-      this->data.gyr[i] -= this->bias.gyr[i];
-      temp_gyr[i]       -= this->bias.euler[i];
+      this->data.euler[i] -= this->bias.euler[i];
+      temp_gyr[i]         -= this->bias.gyr[i];
     }
 
     for(uint8_t i = 0; i < 3; i++)

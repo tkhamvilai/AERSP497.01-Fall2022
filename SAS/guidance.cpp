@@ -6,9 +6,6 @@ Guidance::Guidance()
   this->cmd.ROLL = 0;
   this->cmd.PITCH = 0;
   this->cmd.YAW = 0;
-  this->cmd.ROLL_RATE = 0;
-  this->cmd.PITCH_RATE = 0;
-  this->cmd.YAW_RATE = 0;
 }
 
 Guidance::~Guidance()
@@ -45,13 +42,13 @@ void Guidance::update(const sens_t& sens, const state_t& state, const rc_t& rc)
   }
 
   if(rc.YAW > rc.YAW_MID){
-    this->cmd.YAW_RATE = linear_map<float, int16_t>(rc.YAW, rc.YAW_MID, rc.YAW_MAX, 0, YAW_RATE_LIMIT);
+    this->cmd.YAW = linear_map<float, int16_t>(rc.YAW, rc.YAW_MID, rc.YAW_MAX, 0, YAW_RATE_LIMIT);
   }
   else if(rc.YAW < rc.YAW_MID){
-    this->cmd.YAW_RATE = linear_map<float, int16_t>(rc.YAW, rc.YAW_MIN, rc.YAW_MID, -YAW_RATE_LIMIT, 0);
+    this->cmd.YAW = linear_map<float, int16_t>(rc.YAW, rc.YAW_MIN, rc.YAW_MID, -YAW_RATE_LIMIT, 0);
   }
   else{
-    this->cmd.YAW_RATE = 0;
+    this->cmd.YAW = 0;
   }
 }
 
@@ -61,5 +58,5 @@ void Guidance::print()
   Serial.print(  this->cmd.THR);   Serial.print(", "); 
   Serial.print(  this->cmd.ROLL);  Serial.print(", "); 
   Serial.print(  this->cmd.PITCH); Serial.print(", ");  
-  Serial.println(this->cmd.YAW_RATE);
+  Serial.println(this->cmd.YAW);
 }

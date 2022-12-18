@@ -4,7 +4,7 @@
 #include "math_utils.h"
 
 #define NUM_CALIBRATION 500
-#define LOWPASS_WEIGHT 0.98
+#define LOWPASS_WEIGHT 0.9
 
 class Sensors
 {
