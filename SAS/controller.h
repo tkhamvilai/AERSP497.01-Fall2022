@@ -3,12 +3,12 @@
 
 #include "math_utils.h"
 
-#define K_ROLL_ANGLE 1.0
-#define K_PITCH_ANGLE 1.0
+#define K_ROLL_ANGLE 0.0
+#define K_PITCH_ANGLE 0.0
 
-#define K_ROLL_RATE 10.0
-#define K_PITCH_RATE 10.0
-#define K_YAW_RATE 10.0
+#define K_ROLL_RATE 1.0
+#define K_PITCH_RATE 1.0
+#define K_YAW_RATE 1.0
 
 class Controller
 {
@@ -28,6 +28,7 @@ public:
   float yaw_out;
 
 private:
+  void angular_rate_controller(const sens_t&, const guidance_t&);
   void attitude_controller(const sens_t&, const guidance_t&);
   void altitude_controller(const guidance_t&);
   void mixer();

@@ -3,6 +3,9 @@
 
 #include "math_utils.h"
 
+#define NUM_CALIBRATION 500
+#define LOWPASS_WEIGHT 0.98
+
 class Sensors
 {
 public:
@@ -16,6 +19,8 @@ public:
   sens_t data;
 
 private:
+  sens_t bias;
+  bool calibration_flag;
 };
 
 #endif

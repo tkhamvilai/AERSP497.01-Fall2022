@@ -18,8 +18,15 @@ Sensors::Sensors()
     this->data.mag[i]   = 0;
     this->data.euler[i] = 0;
     this->data.quat[i]  = 0;
+
+    this->bias.gyr[i]   = 0;
+    this->bias.acc[i]   = 0;
+    this->bias.mag[i]   = 0;
+    this->bias.euler[i] = 0;
+    this->bias.quat[i]  = 0;
   }
   this->data.quat[0] = 1;
+  this->calibration_flag = 0;
 }
 
 Sensors::~Sensors() {}
@@ -33,7 +40,24 @@ void Sensors::init()
     delay(100);
     abort();
   }
-  this->update();
+  for(unsigned long i = 0; i < NUM_CALIBRATION; i++)
+  {
+    this->update();
+    for(uint8_t j = 0; j < 3; j++)
+    {
+      this->bias.gyr[j]   += this->data.gyr[j];
+      this->bias.euler[j] += this->data.euler[j];
+    }
+  }
+  for(uint8_t i = 0; i < 3; i++)
+  {
+    this->bias.gyr[i]   /= NUM_CALIBRATION;
+    this->bias.euler[i] /= NUM_CALIBRATION;
+
+    this->data.gyr[i]   = 0;
+    this->data.euler[i] = 0;
+  }
+  this->calibration_flag = 1;
 }
 
 void Sensors::update()
@@ -48,21 +72,33 @@ void Sensors::update()
   }
   
   // YPR to RPY and NED
-  this->data.euler[0] = sensor_raw.euler_angles[2] * POZYX_EULER_SCALE * -1.0; // convert to deg
-  this->data.euler[1] = sensor_raw.euler_angles[1] * POZYX_EULER_SCALE; // convert to deg
+  this->data.euler[0] = sensor_raw.euler_angles[1] * POZYX_EULER_SCALE; // convert to deg
+  this->data.euler[1] = sensor_raw.euler_angles[2] * POZYX_EULER_SCALE; // convert to deg
   this->data.euler[2] = sensor_raw.euler_angles[0] * POZYX_EULER_SCALE; // convert to deg
 
-  for(uint8_t i = 0; i < 3; i++)
+  if(this->calibration_flag) // regular reading
   {
-     this->data.gyr[i] = sensor_raw.angular_vel[i] * DEG2RAD * POZYX_GYR_SCALE; // convert to rad/s
-//     this->data.acc[i] = sensor_raw.acceleration[i] * MILLI2BASE * GRAVITY; // convert from milli-g to m/s^2
-//     this->data.mag[i] = sensor_raw.magnetic[i] * POZYX_MAG_SCALE; // convert to µT
-    if(i > 0) // convert to NED
+    float temp_gyr[3];
+    temp_gyr[0] = sensor_raw.angular_vel[1] * POZYX_GYR_SCALE * -1.0; // convert to deg/s
+    temp_gyr[1] = sensor_raw.angular_vel[0] * POZYX_GYR_SCALE * -1.0; // convert to deg/s
+    temp_gyr[2] = sensor_raw.angular_vel[2] * POZYX_GYR_SCALE * -1.0; // convert to deg/s
+
+    for(uint8_t i = 0; i < 3; i++)
     {
-       this->data.gyr[i] *= -1.0; 
-       this->data.acc[i] *= -1.0; 
-       this->data.mag[i] *= -1.0;
+      this->data.gyr[i] -= this->bias.gyr[i];
+      temp_gyr[i]       -= this->bias.euler[i];
     }
+
+    for(uint8_t i = 0; i < 3; i++)
+    {
+      this->data.gyr[i] = LOWPASS_WEIGHT*this->data.gyr[i] + (1-LOWPASS_WEIGHT)*temp_gyr[i]; // low-pass filter
+    }    
+  }
+  else // calibration step
+  {
+    this->data.gyr[0] = sensor_raw.angular_vel[1] * POZYX_GYR_SCALE * -1.0; // convert to deg/s
+    this->data.gyr[1] = sensor_raw.angular_vel[0] * POZYX_GYR_SCALE * -1.0; // convert to deg/s
+    this->data.gyr[2] = sensor_raw.angular_vel[2] * POZYX_GYR_SCALE * -1.0; // convert to deg/s
   }
 }
 

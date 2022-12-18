@@ -34,6 +34,8 @@ void Actuators::init()
 
   // wait to make sure everything is set
   delay(1000); // it's okay to use delay in setup()
+
+  this->stop();
 }
 
 void Actuators::calibrate()

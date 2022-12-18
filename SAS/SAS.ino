@@ -7,7 +7,7 @@
 #include "led.h"
 
 unsigned long previousTime = 0;
-const long interval = 2; // millisecond
+const long interval = 1; // millisecond
 
 Sensors sens;
 Navigation nav;
@@ -18,18 +18,15 @@ Actuators motors;
 LED led;
 
 void setup() {  
-  Serial.begin(115200);
-
   led.init();
+  motors.init();
   sens.init();
   nav.init();
   rc.init();
   gd.init();
   cntrl.init();
-  motors.init();
 
-//  motors.calibrate();
-  motors.stop();
+  Serial.begin(115200);
   delay(3000);
 
   do
@@ -42,13 +39,13 @@ void setup() {
 }
 
 void loop() {
-  unsigned long currentTime = millis();
+  // unsigned long currentTime = millis();
 
-  if(currentTime - previousTime >= interval) 
-  {
+  // if(currentTime - previousTime >= interval) 
+  // {
     // Serial.println(previousTime);
-    previousTime = currentTime;
-    float dt = interval * 0.001; // convert to second
+    // previousTime = currentTime;
+    // float dt = interval * 0.001; // convert to second
 
     sens.update();
     // nav.update(sens.data, dt);
@@ -66,7 +63,7 @@ void loop() {
     }
 
     print();
-  }
+  // }
 }
 
 void print()
