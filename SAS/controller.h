@@ -3,11 +3,11 @@
 
 #include "math_utils.h"
 
-#define P_ROLL_ANGLE 1.0
-#define P_PITCH_ANGLE 1.0
+#define P_ROLL_ANGLE 0.9
+#define P_PITCH_ANGLE 0.9
 
-#define P_ROLL_RATE 0.15
-#define P_PITCH_RATE 0.15
+#define P_ROLL_RATE 0.12
+#define P_PITCH_RATE 0.12
 #define P_YAW_RATE 5.0
 
 #define D_ROLL_RATE 1.0
